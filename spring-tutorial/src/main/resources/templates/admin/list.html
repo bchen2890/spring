@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of users</title>
+</head>
+<body>
+<h1> List of users</h1>
+
+<div th:if="${users.isEmpty()}">There is no user!</div>
+
+<table th:if="${not users.isEmpty()}">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${users}">
+        <td th:text="${user.name}"></td>
+        <td> <a th:href="@{/admin/view/} + ${user.name} + '/' + ${user.age}">View</a> </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

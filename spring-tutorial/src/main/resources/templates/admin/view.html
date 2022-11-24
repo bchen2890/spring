@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>View</title>
+</head>
+<body>
+    <h3>You're viewing <span th:text="${name}"></span>:</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${name}"></td>
+            <td th:text="${age}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
