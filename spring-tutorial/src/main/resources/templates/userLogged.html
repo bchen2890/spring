@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Logged</title>
+</head>
+<body>
+    <h3>Welcome <span th:text="${user.username}"></span> !</h3>
+    <p>
+        Your email is <span th:text="${user.email}"></span>
+        and your password is <span th:text="${user.password}"></span>
+    </p>
+</body>
+</html>
