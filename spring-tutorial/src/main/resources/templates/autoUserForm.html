@@ -29,6 +29,20 @@
             <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" ></div>
         </div>
         <div>
+            <label for="name">Nombre</label>
+            <div>
+                <input type="text" name="name" id="name"  th:field="*{name}">
+            </div>
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{name}" ></div>
+        </div>
+        <div>
+            <label for="age">Age</label>
+            <div>
+                <input type="number" name="age" id="age"  th:field="*{age}">
+            </div>
+            <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}" ></div>
+        </div>
+        <div>
             <div>
                 <input type="submit" value="Send">
             </div>

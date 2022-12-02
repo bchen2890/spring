@@ -1,13 +1,19 @@
 package com.bchen.tutorial.spring.model;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
+import java.util.Date;
 
 public class User {
+    private Date lastLogin;
     @NotEmpty
+    @Size(min=3, max=10, message = "The username must be between 3 and 10 characters")
+    @Pattern(regexp = "[a-z0-9]*")
     private String username;
+    @NotBlank
     private String name;
     private Integer age;
     @NotEmpty
+    @Email
     private String email;
     @NotEmpty
     private String password;
@@ -58,5 +64,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
     }
 }

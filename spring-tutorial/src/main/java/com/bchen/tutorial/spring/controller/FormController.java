@@ -1,20 +1,29 @@
 package com.bchen.tutorial.spring.controller;
 
 import com.bchen.tutorial.spring.model.User;
+import com.bchen.tutorial.spring.model.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@SessionAttributes("user")
 public class FormController {
+    @Autowired
+    private UserValidator validator;
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.addValidators(validator);
+    }
     @GetMapping("/form")
     public String getForm (){
         return "form";
@@ -55,23 +64,22 @@ public class FormController {
     @GetMapping("/auto-user-form")
     public String getAutoUserForm ( Model model){
         User user = new User();
+        user.setLastLogin(new Date());
         model.addAttribute("user", user);
         return "autoUserForm";
     }
 
     @PostMapping("/auto-user-form")
-    public String autoUserForm (@Valid @ModelAttribute("user") User user, BindingResult result, Model model){
+    public String autoUserForm (@Valid @ModelAttribute("user") User user, BindingResult result,
+                                Model model, SessionStatus status){
+        //not necessary when there is @InitBinder
+        //validator.validate(user, result);
         if(result.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            result.getFieldErrors().forEach(err -> {
-                String field = err.getField();
-                errors.put(field, "The field " + field + " " + err.getDefaultMessage());
-            });
-            model.addAttribute("errors", errors);
             return "autoUserForm";
         }
         model.addAttribute("user", user);
+        status.setComplete();
 
-        return "userLogged";
+        return "autoUserLogged";
     }
 }

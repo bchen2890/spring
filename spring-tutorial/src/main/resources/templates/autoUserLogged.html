@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Logged</title>
+</head>
+<body>
+    <h3>Welcome <span th:text="${user.name}"></span> !</h3>
+    <p>
+        Your email is <span th:text="${user.email}"></span>
+        your password is <span th:text="${user.password}"></span>
+        and your age is <span th:text="${user.age}"></span>
+
+    </p>
+    <p>Last login at: <span th:text="${user.lastLogin}"></span></p>
+</body>
+</html>
