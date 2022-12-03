@@ -16,6 +16,7 @@ public class User {
     @Email
     private String email;
     @NotEmpty
+    @PasswordRegex
     private String password;
     public User(){
 
