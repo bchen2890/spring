@@ -1,23 +1,37 @@
 package com.bchen.tutorial.spring.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.*;
 import java.util.Date;
 
 public class User {
     private Date lastLogin;
+
     @NotEmpty
     @Size(min=3, max=10, message = "The username must be between 3 and 10 characters")
     @Pattern(regexp = "[a-z0-9]*")
     private String username;
+
     @NotBlank
     private String name;
+
+    @Max(120)
+    @Min(18)
     private Integer age;
+
     @NotEmpty
     @Email
     private String email;
+
     @NotEmpty
     @PasswordRegex
     private String password;
+
+    @Past //Also @Future
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthday;
+
     public User(){
 
     }
@@ -73,5 +87,13 @@ public class User {
 
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 }

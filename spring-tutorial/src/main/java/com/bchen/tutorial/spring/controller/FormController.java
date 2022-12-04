@@ -1,8 +1,10 @@
 package com.bchen.tutorial.spring.controller;
 
+import com.bchen.tutorial.spring.model.UppercaseEditor;
 import com.bchen.tutorial.spring.model.User;
 import com.bchen.tutorial.spring.model.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +26,14 @@ public class FormController {
     @InitBinder
     public void initBinder(WebDataBinder binder){
         binder.addValidators(validator);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        format.setLenient(false);
+        binder.registerCustomEditor(Date.class, "birthday", new CustomDateEditor(format, false));
+        binder.registerCustomEditor(String.class, "name", new UppercaseEditor());
+        //for all String field:
+        //binder.registerCustomEditor(String.class, new UppercaseNameEditor());
     }
+
     @GetMapping("/form")
     public String getForm (){
         return "form";
