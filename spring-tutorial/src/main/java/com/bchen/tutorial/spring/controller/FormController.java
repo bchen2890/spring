@@ -1,8 +1,7 @@
 package com.bchen.tutorial.spring.controller;
 
-import com.bchen.tutorial.spring.model.UppercaseEditor;
-import com.bchen.tutorial.spring.model.User;
-import com.bchen.tutorial.spring.model.UserValidator;
+import com.bchen.tutorial.spring.model.*;
+import com.bchen.tutorial.spring.service.ICountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -14,15 +13,21 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @SessionAttributes("user")
 public class FormController {
     @Autowired
     private UserValidator validator;
+
+    @Autowired
+    private ICountryService countryService;
+
+    @Autowired
+    private CountryEditor countryEditor;
+
+
     @InitBinder
     public void initBinder(WebDataBinder binder){
         binder.addValidators(validator);
@@ -32,6 +37,32 @@ public class FormController {
         binder.registerCustomEditor(String.class, "name", new UppercaseEditor());
         //for all String field:
         //binder.registerCustomEditor(String.class, new UppercaseNameEditor());
+
+        binder.registerCustomEditor(Country.class, "country", countryEditor);
+    }
+    @ModelAttribute("countries")
+    public List<String> countries(){
+        return Arrays.asList("Spain","Portugal", "Andorra", "France", "Germany", "Italy");
+    }
+    @ModelAttribute("countriesMap")
+    public Map<String, String> countriesMap(){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("ES", "Spain");
+        map.put("PT", "Portugal");
+        map.put("AD", "Andorra");
+        map.put("FR", "France");
+        map.put("DE", "Germany");
+        map.put("IT", "Italy");
+        return map;
+    }
+    @ModelAttribute("countriesList")
+    public List<Country> countriesList(){
+        return Arrays.asList(new Country(1, "ES", "Spain"),
+                new Country(2, "PT", "Portugal"),
+                new Country(3, "AD", "Andorra"),
+                new Country(4, "FR", "France"),
+                new Country(5, "DE", "Germany"),
+                new Country(6, "IT", "Italy"));
     }
 
     @GetMapping("/form")

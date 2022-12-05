@@ -9,9 +9,9 @@
     <p>
         Your email is <span th:text="${user.email}"></span>
         your password is <span th:text="${user.password}"></span>
-        and your age is <span th:text="${user.age}"></span>
-
+        your age is <span th:text="${user.age}"></span>
+        and you're in <span th:text="${user.country.name}"></span>
     </p>
-    <p>Last login at: <span th:text="${user.lastLogin}"></span></p>
+    <p>Last login at: <span th:text="${#calendars.format(user.lastLogin, 'dd-MM-yyyy')}"></span></p>
 </body>
 </html>

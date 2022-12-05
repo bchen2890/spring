@@ -2,6 +2,7 @@ package com.bchen.tutorial.spring.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.Date;
 
@@ -31,6 +32,9 @@ public class User {
     @Past //Also @Future
     //@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
+
+    @NotNull
+    private Country country;
 
     public User(){
 
@@ -95,5 +99,13 @@ public class User {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 }
