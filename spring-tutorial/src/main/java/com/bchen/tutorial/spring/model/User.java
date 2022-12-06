@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private Date lastLogin;
@@ -35,6 +36,9 @@ public class User {
 
     @NotNull
     private Country country;
+
+    @NotEmpty
+    private List<Role> roles;
 
     public User(){
 
@@ -107,5 +111,13 @@ public class User {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

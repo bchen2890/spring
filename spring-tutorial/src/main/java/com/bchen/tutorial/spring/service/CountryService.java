@@ -27,13 +27,9 @@ public class CountryService implements ICountryService{
     public Country getById(Integer id) {
         for (Country country : list) {
             if (country.getId().equals(id)) {
-                System.out.println("FOUND:"+ id);
-
                 return country;
             }
         }
-        System.out.println("Not:"+ id);
-
         return null;
     }
 }

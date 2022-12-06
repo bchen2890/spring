@@ -15,7 +15,6 @@ public class CountryEditor extends PropertyEditorSupport {
         if(text != null && text.length()>0){
             try {
                 Integer id = Integer.parseInt(text);
-                System.out.println("CON:"+ text + ", " + id);
                 this.setValue(service.getById(id));
             } catch (NumberFormatException e){
                 this.setValue(null);

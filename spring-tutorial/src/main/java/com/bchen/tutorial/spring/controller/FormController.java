@@ -2,6 +2,8 @@ package com.bchen.tutorial.spring.controller;
 
 import com.bchen.tutorial.spring.model.*;
 import com.bchen.tutorial.spring.service.ICountryService;
+import com.bchen.tutorial.spring.service.IRoleService;
+import com.bchen.tutorial.spring.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,10 @@ public class FormController {
     @Autowired
     private CountryEditor countryEditor;
 
+    @Autowired
+    private IRoleService roleService;
+    @Autowired
+    private RolesEditor rolesEditor;
 
     @InitBinder
     public void initBinder(WebDataBinder binder){
@@ -39,7 +45,15 @@ public class FormController {
         //binder.registerCustomEditor(String.class, new UppercaseNameEditor());
 
         binder.registerCustomEditor(Country.class, "country", countryEditor);
+        binder.registerCustomEditor(Role.class, "roles", rolesEditor);
+
     }
+
+    @ModelAttribute("rolesList")
+    public List<Role> rolesList(){
+        return this.roleService.getList();
+    }
+
     @ModelAttribute("countries")
     public List<String> countries(){
         return Arrays.asList("Spain","Portugal", "Andorra", "France", "Germany", "Italy");

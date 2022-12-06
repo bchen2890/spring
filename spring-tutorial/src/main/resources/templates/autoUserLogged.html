@@ -13,5 +13,10 @@
         and you're in <span th:text="${user.country.name}"></span>
     </p>
     <p>Last login at: <span th:text="${#calendars.format(user.lastLogin, 'dd-MM-yyyy')}"></span></p>
+
+    <div>Roles</div>
+    <ul>
+        <li th:each="role: ${user.roles}" th:text="${role.id} + ': ' + ${role.role} + ' => ' + ${role.name}"></li>
+    </ul>
 </body>
 </html>
