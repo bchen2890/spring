@@ -120,6 +120,13 @@ public class FormController {
     public String getAutoUserForm ( Model model){
         User user = new User();
         user.setLastLogin(new Date());
+        user.setUsername("bchen");
+        user.setEmail("bchen@example.com");
+        user.setName("Binhui");
+        user.setAge(22);
+        user.setBirthday(new GregorianCalendar(2000, 0, 1).getTime());
+        user.setCountry(new Country(1, "ES", "Spain"));
+        user.setRoles(Arrays.asList(new Role(1, "Administrator", "ROLE_ADMIN")));
         model.addAttribute("user", user);
         return "autoUserForm";
     }
@@ -132,6 +139,16 @@ public class FormController {
         if(result.hasErrors()) {
             return "autoUserForm";
         }
+
+        return "redirect:/auto-user-logged";
+    }
+
+    @GetMapping("/auto-user-logged")
+    public String autoUserLogged (@SessionAttribute(name="user", required = false) User user,
+                                Model model, SessionStatus status){
+        if(user == null)
+            return "redirect:/auto-user-form";
+
         model.addAttribute("user", user);
         status.setComplete();
 

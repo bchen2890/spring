@@ -1,5 +1,7 @@
 package com.bchen.tutorial.spring.model;
 
+import java.util.Objects;
+
 public class Role {
     private Integer id;
     private String name;
@@ -37,4 +39,13 @@ public class Role {
     public void setRole(String role) {
         this.role = role;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role1 = (Role) o;
+        return Objects.equals(id, role1.id) && Objects.equals(name, role1.name) && Objects.equals(role, role1.role);
+    }
+
 }
