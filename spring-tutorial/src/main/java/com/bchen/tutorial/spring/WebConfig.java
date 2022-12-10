@@ -14,9 +14,14 @@ public class WebConfig implements WebMvcConfigurer {
     @Qualifier("timerInterceptor")
     private HandlerInterceptor timerInterceptor;
 
+    @Autowired
+    @Qualifier("scheduleInterceptor")
+    private HandlerInterceptor scheduleInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(timerInterceptor);
+        registry.addInterceptor(timerInterceptor).addPathPatterns("/auto-user-*");
+        registry.addInterceptor(scheduleInterceptor).addPathPatterns("/support", "/support/");
     }
 
 }

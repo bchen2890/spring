@@ -24,8 +24,8 @@ public class TimerInterceptor implements HandlerInterceptor {
         }
 
         if(handler instanceof HandlerMethod) {
-            HandlerMethod metodo = (HandlerMethod) handler;
-            logger.info("Controller method: " + metodo.getMethod().getName());
+            HandlerMethod method = (HandlerMethod) handler;
+            logger.info("Controller method: " + method.getMethod().getName());
         }
 
         logger.info("TimerInterceptor: preHandle()");
