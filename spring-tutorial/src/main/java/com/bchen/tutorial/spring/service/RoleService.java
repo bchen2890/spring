@@ -1,10 +1,12 @@
 package com.bchen.tutorial.spring.service;
 
 import com.bchen.tutorial.spring.model.Role;
+import com.bchen.tutorial.spring.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleService implements IRoleService{
@@ -29,5 +31,11 @@ public class RoleService implements IRoleService{
             }
         }
         return null;
+    }
+
+    @Override
+    public Optional<Role> getByIdOptional(Integer id) {
+        Role role = this.getById(id);
+        return Optional.ofNullable(role);
     }
 }
