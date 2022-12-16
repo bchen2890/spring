@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/list")
     public String list(Model model){
-        model.addAttribute("list", userDao.findAll());
+        model.addAttribute("users", userDao.findAll());
         return "list";
     }
 

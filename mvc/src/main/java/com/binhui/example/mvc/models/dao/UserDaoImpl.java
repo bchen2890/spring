@@ -17,7 +17,7 @@ public class UserDaoImpl implements IUserDao{
     @Transactional(readOnly = true)
     @Override
     public List<User> findAll() {
-        return em.createQuery("from client").getResultList();
+        return em.createQuery("from User").getResultList();
     }
 
     @Transactional
