@@ -31,7 +31,7 @@ public class UserController {
         return "form";
     }
 
-    @PutMapping(value = "/form/{id}")
+    @RequestMapping(value = "/user/{id}")
     public String edit(@PathVariable(value="id") Long id, Map<String, Object> model) {
 
         User user = null;
@@ -53,14 +53,14 @@ public class UserController {
 
         userDao.save(user);
         status.setComplete();
-        return "redirect:list";
+        return "redirect:/list";
     }
 
-    @DeleteMapping(value="/user/{id}")
+    @RequestMapping(value="/delete/{id}")
     public String delete(@PathVariable(value="id") Long id) {
         if(id > 0) {
             userDao.delete(id);
         }
-        return "redirect:/listar";
+        return "redirect:/list";
     }
 }
