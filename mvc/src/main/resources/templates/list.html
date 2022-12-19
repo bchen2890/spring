@@ -6,12 +6,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
-<div class="container card text-bg-info    text-light mt-4 mb-4">
+<div class="container card mt-4">
     <div class="card-body">
-        <h4 class="card-title">List of users <a th:href="@{/form}" class="btn btn-light btn-xs">+</a></h4>
-        <p class="card-text">
+        <div class="container row card-title">
+            <h4 class="col-2">List of users</h4>
+            <span class="col-9"></span>
+            <a th:href="@{/form}" class="btn btn-success btn-xs col-1">+ Add</a>
+        </div>
+        <div class="card-text">
         <table class="table table-striped">
-            <thead class="bg-light p-2 text-info bg-opacity-75">
+            <thead class="bg-secondary p-2 text-light bg-opacity-75">
             <tr>
                 <th>Id</th>
                 <th>Username</th>
@@ -22,7 +26,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user: ${users}" class="bg-light text-info">
+            <tr th:each="user: ${users}" class="bg-light">
                 <td th:text="${user.id}"></td>
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.email}"></td>
@@ -31,10 +35,9 @@
                 <td><a class="btn btn-danger btn-xs" th:href="@{/delete/} + ${user.id}" th:text="'Delete'" onclick="return confirm('Are you sure you want to delete this user?');"></a></td>
             </tr>
             </tbody>
-
         </table>
-    </div>
-        </p>
+        </div>
+        </div>
     </div>
 </div>
 </body>

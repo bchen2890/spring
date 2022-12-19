@@ -1,7 +1,7 @@
 package com.binhui.example.mvc.controller;
 
-import com.binhui.example.mvc.models.dao.IUserDao;
 import com.binhui.example.mvc.models.entity.User;
+import com.binhui.example.mvc.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,23 +10,25 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.Date;
 import java.util.Map;
 
 @Controller
 @SessionAttributes("user")
 public class UserController {
     @Autowired
-    private IUserDao userDao;
+    private IUserService userService;
 
     @GetMapping("/list")
     public String list(Model model){
-        model.addAttribute("users", userDao.findAll());
+        model.addAttribute("users", userService.findAll());
         return "list";
     }
 
     @RequestMapping(value="/form")
     public String create (Map<String, Object> model){
         User user = new User();
+        user.setCreatedAt(new Date());
         model.put("user", user);
         return "form";
     }
@@ -37,7 +39,7 @@ public class UserController {
         User user = null;
 
         if(id > 0) {
-            user = userDao.findOne(id);
+            user = userService.findOne(id);
         } else {
             return "redirect:/list";
         }
@@ -51,7 +53,7 @@ public class UserController {
             return "form";
         }
 
-        userDao.save(user);
+        userService.save(user);
         status.setComplete();
         return "redirect:/list";
     }
@@ -59,7 +61,7 @@ public class UserController {
     @RequestMapping(value="/delete/{id}")
     public String delete(@PathVariable(value="id") Long id) {
         if(id > 0) {
-            userDao.delete(id);
+            userService.delete(id);
         }
         return "redirect:/list";
     }

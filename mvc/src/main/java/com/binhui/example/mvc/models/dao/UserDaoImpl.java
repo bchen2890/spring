@@ -14,13 +14,11 @@ public class UserDaoImpl implements IUserDao{
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional(readOnly = true)
     @Override
     public List<User> findAll() {
         return em.createQuery("from User").getResultList();
     }
 
-    @Transactional
     @Override
     public void save(User user) {
         if(user.getId()!=null && user.getId() > 0){
@@ -30,13 +28,11 @@ public class UserDaoImpl implements IUserDao{
         }
     }
 
-    @Transactional(readOnly = true)
     @Override
     public User findOne(Long id) {
         return em.find(User.class, id);
     }
 
-    @Transactional
     @Override
     public void delete(Long id) {
         em.remove(findOne(id));
