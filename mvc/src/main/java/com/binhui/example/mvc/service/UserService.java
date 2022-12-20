@@ -5,6 +5,8 @@ import com.binhui.example.mvc.models.dao.UserDaoCrud;
 import com.binhui.example.mvc.models.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,5 +44,11 @@ public class UserService implements IUserService{
     @Override
     public void delete(Long id) {
         userDao.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<User> findAll(Pageable pageable) {
+        return userDao.findAll(pageable);
     }
 }

@@ -2,7 +2,11 @@ package com.binhui.example.mvc.controller;
 
 import com.binhui.example.mvc.models.entity.User;
 import com.binhui.example.mvc.service.IUserService;
+import com.binhui.example.mvc.service.PageRender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,9 +23,22 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/list")
+   /* @GetMapping("/list")
     public String list(Model model){
         model.addAttribute("users", userService.findAll());
+        return "list";
+    }*/
+
+    @GetMapping("/list")
+    public String list(@RequestParam(name="page", defaultValue="0") int page, Model model) {
+
+        Pageable pageRequest = PageRequest.of(page, 8);
+
+        Page<User> users = userService.findAll(pageRequest);
+
+        PageRender<User> pageRender = new PageRender<User>("/list", users);
+        model.addAttribute("users", users);
+        model.addAttribute("page", pageRender);
         return "list";
     }
 
