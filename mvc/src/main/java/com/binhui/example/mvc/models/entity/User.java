@@ -25,6 +25,8 @@ public class User implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
 
+    private String image;
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -55,5 +57,13 @@ public class User implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

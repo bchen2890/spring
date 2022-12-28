@@ -1,19 +1,30 @@
 package com.binhui.example.mvc.controller;
 
 import com.binhui.example.mvc.models.entity.User;
+import com.binhui.example.mvc.service.IUploadFileService;
 import com.binhui.example.mvc.service.IUserService;
 import com.binhui.example.mvc.service.PageRender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Map;
 
@@ -28,6 +39,8 @@ public class UserController {
         model.addAttribute("users", userService.findAll());
         return "list";
     }*/
+    @Autowired
+    private IUploadFileService uploadFileService;
 
     @GetMapping("/list")
     public String list(@RequestParam(name="page", defaultValue="0") int page, Model model) {
@@ -65,21 +78,65 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public String save(@Validated User user, BindingResult result, Model model, SessionStatus status) {
+    public String save(@Validated User user, BindingResult result, Model model, 
+                       @RequestParam("file") MultipartFile image, RedirectAttributes flash,
+                       SessionStatus status) {
         if(result.hasErrors()) {
             return "form";
         }
+        if (!image.isEmpty()) {
+            if (user.getId() != null && user.getId() > 0 && user.getImage() != null
+                    && user.getImage().length() > 0) {
+                uploadFileService.delete(user.getImage());
+            }
+
+            String uniqueFilename = null;
+            try {
+                uniqueFilename = uploadFileService.copy(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            flash.addFlashAttribute("info", "Uploaded successfully'" + uniqueFilename + "'");
+
+            user.setImage(uniqueFilename);
+        }
+
+        String flashMsg = (user.getId() != null) ? "User edited successfully!" : "User created successfully!";
 
         userService.save(user);
         status.setComplete();
+        flash.addFlashAttribute("success", flashMsg);
         return "redirect:/list";
     }
 
     @RequestMapping(value="/delete/{id}")
-    public String delete(@PathVariable(value="id") Long id) {
+    public String delete(@PathVariable(value="id") Long id, RedirectAttributes flash) {
         if(id > 0) {
+            User user = userService.findOne(id);
             userService.delete(id);
+            flash.addFlashAttribute("success", "User deleted successfully!");
+
+            if (uploadFileService.delete(user.getImage())) {
+                flash.addFlashAttribute("info", "Image " + user.getImage() + " deleted successfully!");
+            }
         }
         return "redirect:/list";
+    }
+
+    @GetMapping(value = "/uploads/{filename:.+}")
+    public ResponseEntity<Resource> viewImage(@PathVariable String filename) {
+
+        Resource resource = null;
+
+        try {
+            resource = uploadFileService.load(filename);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 }
