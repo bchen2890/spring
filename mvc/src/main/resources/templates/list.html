@@ -27,7 +27,7 @@
             </thead>
             <tbody>
             <tr th:each="user: ${users}" class="bg-light">
-                <td th:text="${user.id}"></td>
+                <td><a class="btn btn-success btn-xs" th:href="@{/view/} + ${user.id}" th:text="${user.id}"></a></td>
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.createdAt}"></td>
@@ -38,7 +38,7 @@
         </table>
         </div>
         </div>
-        <nav th:replace="pagination :: pagination"></nav>
+        <nav th:replace="~{pagination :: pagination}"></nav>
 </div>
 </div>
 </body>

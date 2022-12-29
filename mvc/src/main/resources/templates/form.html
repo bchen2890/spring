@@ -8,7 +8,7 @@
 <body>
 <div class="container col-8 card text-bg-info text-light mt-4 mb-4">
     <h1 class="container text-center">Form</h1>
-    <form th:action="@{/user}" th:object="${user}" method="post">
+    <form th:action="@{/user}" th:object="${user}" method="post" enctype="multipart/form-data">
         <div class="m-4">
             <label for="username" class="form-label">Username</label>
             <div>
@@ -22,6 +22,12 @@
                 <input type="email" name="email" id="email"  th:field="*{email}" class="form-control">
             </div>
             <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger" role="alert"></div>
+        </div>
+        <div class="m-4">
+            <label for="file" class="col-sm-2 col-form-label">Image</label>
+            <div class="col-sm-6">
+                <input if="file" type="file" name="file" class="form-control" />
+            </div>
         </div>
         <div class="m-4">
             <div class="text-center">

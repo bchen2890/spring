@@ -59,6 +59,8 @@ public class UserController {
     public String create (Map<String, Object> model){
         User user = new User();
         user.setCreatedAt(new Date());
+        user.setUsername("bchen");
+        user.setEmail("hello@example.com");
         model.put("user", user);
         return "form";
     }
@@ -79,20 +81,24 @@ public class UserController {
 
     @PostMapping("/user")
     public String save(@Validated User user, BindingResult result, Model model, 
-                       @RequestParam("file") MultipartFile image, RedirectAttributes flash,
+                       @RequestParam("file") MultipartFile file, RedirectAttributes flash,
                        SessionStatus status) {
         if(result.hasErrors()) {
+            System.out.println("error");
+            result.getAllErrors().forEach(objectError -> System.out.println("error: " + objectError.toString()));
             return "form";
         }
-        if (!image.isEmpty()) {
+        if (!file.isEmpty()) {
+
             if (user.getId() != null && user.getId() > 0 && user.getImage() != null
                     && user.getImage().length() > 0) {
+                System.out.println("delete");
                 uploadFileService.delete(user.getImage());
             }
 
             String uniqueFilename = null;
             try {
-                uniqueFilename = uploadFileService.copy(image);
+                uniqueFilename = uploadFileService.copy(file);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -138,5 +144,18 @@ public class UserController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
+    }
+
+    @GetMapping(value = "/view/{id}")
+    public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+
+        User user = userService.findOne(id);
+        if (user == null) {
+            flash.addFlashAttribute("error", "This user doesn't exist");
+            return "redirect:/list";
+        }
+
+        model.put("user", user);
+        return "view";
     }
 }
