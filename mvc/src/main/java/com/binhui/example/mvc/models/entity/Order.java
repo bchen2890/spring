@@ -25,11 +25,11 @@ public class Order implements Serializable {
     private String description;
 
     @Temporal(TemporalType.DATE)
-    private Date createAt;
+    private Date createdAt;
 
     @PrePersist
     public void prePersist() {
-        createAt = new Date();
+        createdAt = new Date();
     }
 
     public Order() {
@@ -64,12 +64,12 @@ public class Order implements Serializable {
         return id;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Date createAt) {
+        this.createdAt = createAt;
     }
 
     public String getDescription() {

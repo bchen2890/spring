@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -26,6 +27,10 @@ public class User implements Serializable {
     private Date createdAt;
 
     private String image;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> orders;
+
 
     public void setEmail(String email) {
         this.email = email;
@@ -65,5 +70,13 @@ public class User implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

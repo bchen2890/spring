@@ -6,9 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
-
 @Component("userDaoCrud")
 public interface UserDaoCrud extends CrudRepository<User, Long> {
     Page<User> findAll(Pageable page);
