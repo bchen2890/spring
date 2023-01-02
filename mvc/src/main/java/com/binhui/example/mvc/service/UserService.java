@@ -1,7 +1,10 @@
 package com.binhui.example.mvc.service;
 
-import com.binhui.example.mvc.models.dao.IUserDao;
+import com.binhui.example.mvc.models.dao.OrderDaoCrud;
+import com.binhui.example.mvc.models.dao.ProductDaoCrud;
 import com.binhui.example.mvc.models.dao.UserDaoCrud;
+import com.binhui.example.mvc.models.entity.Order;
+import com.binhui.example.mvc.models.entity.Product;
 import com.binhui.example.mvc.models.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +24,10 @@ public class UserService implements IUserService{
     @Autowired
     @Qualifier("userDaoCrud")
     private UserDaoCrud userDao;
+    @Autowired
+    private OrderDaoCrud orderDao;
+    @Autowired
+    private ProductDaoCrud productDao;
 
     @Transactional(readOnly = true)
     @Override
@@ -51,4 +58,23 @@ public class UserService implements IUserService{
     public Page<User> findAll(Pageable pageable) {
         return userDao.findAll(pageable);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findByName(String term) {
+        return productDao.findByNameLikeIgnoreCase("%" + term + "%");
+    }
+
+    @Override
+    public void saveOrder(Order order){
+        orderDao.save(order);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Product findProductById(Long id){
+        return productDao.findById(id).orElse(null);
+    }
+
+
 }

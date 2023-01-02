@@ -80,7 +80,7 @@ public class Order implements Serializable {
         this.description = description;
     }
 
-    public void addItemFactura(OrderItem item) {
+    public void addOrderItem(OrderItem item) {
         this.items.add(item);
     }
 
