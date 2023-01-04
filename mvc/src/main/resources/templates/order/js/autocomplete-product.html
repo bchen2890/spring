@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<script type="text/javascript" th:fragment="javascript">
+		$(document).ready(function() {
+
+			$("#search_product").autocomplete({
+
+				source : function(request, response) {
+					$.ajax({
+						url : "/order/load-products/" + request.term,
+						dataType : "json",
+						data : {
+							term : request.term
+						},
+						success : function(data) {
+							response($.map(data, function(item) {
+								return {
+									value : item.id,
+									label : item.name,
+									price : item.price,
+								};
+							}));
+						},
+					});
+				},
+				select : function(event, ui) {
+					//$("#search_product").val(ui.item.label);
+
+					if(itemsHelper.hasProduct(ui.item.value)){
+						itemsHelper.addOneQuantity(ui.item.value, ui.item.price);
+						return false;
+					}
+					
+					var line = $("#orderItemsTemplate").html();
+
+					line = line.replace(/{ID}/g, ui.item.value);
+					line = line.replace(/{NAME}/g, ui.item.label);
+					line = line.replace(/{PRICE}/g, ui.item.price);
+
+					$("#loadProducts tbody").append(line);
+					itemsHelper.getQuantity(ui.item.value, ui.item.price, 1);
+
+					return false;
+				}
+			});
+
+			$("form").submit(function(){
+				$("#orderItemsTemplate").remove();
+				return;
+			});
+
+		});
+		
+		var itemsHelper = {
+				getQuantity: function(id, price, quantity){
+					$("#quantity_total_" + id).html(parseInt(price) * parseInt(quantity));
+					this.getTotalQuantity();
+				},
+				hasProducto: function(id){
+					
+					var result = false;
+					
+					$('input[name="item_id[]"]').each(function(){
+						if(parseInt(id) == parseInt($(this).val()) ){
+							result = true;
+						}
+					});
+					
+					return result;
+				},
+				addOneQuantity: function(id, price){
+					var quantity = $("#quantity_" + id).val() ? parseInt($("#quantity_" + id).val()) : 0;
+					$("#quantity_" + id).val(++quantity);
+					this.getQuantity(id, price, quantity);
+				},
+				deleteOrderItem: function(id){
+					$("#row_" + id).remove();
+					this.getTotalQuantity();
+				},
+				getTotalQuantity: function(){
+					var total = 0;
+					
+					$('span[id^="quantity_total_"]').each(function(){
+						total += parseInt($(this).html());
+					});
+					
+					$('#quantity_total').html(total);
+				}
+		}
+	</script>
+</body>
+</html>
