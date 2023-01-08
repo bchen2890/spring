@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -26,6 +27,22 @@ public class OrderController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @GetMapping("/view/{id}")
+    public String view(@PathVariable(value="id") Long id,
+                      Model model,
+                      RedirectAttributes flash) {
+        Order order = userService.findOrderById(id);
+
+        if(order == null) {
+            flash.addFlashAttribute("error", "This order doesn't exist!");
+            return "redirect:/list";
+        }
+
+        model.addAttribute("order", order);
+
+        return "order/view";
+    }
+
     @GetMapping("/form/{userId}")
     public String create(@PathVariable(value = "userId") Long userId, Map<String, Object> model,
                         RedirectAttributes flash) {
@@ -39,7 +56,7 @@ public class OrderController {
 
         Order order = new Order();
         order.setUser(user);
-
+        order.setDescription("description");
         model.put("order", order);
         return "order/form";
     }
@@ -56,18 +73,18 @@ public class OrderController {
                           @RequestParam(name = "quantity[]", required = false) Integer[] quantity,
                           RedirectAttributes flash,
                           SessionStatus status) {
+        if(itemId != null) {
+            for (int i = 0; i < itemId.length; i++) {
+                Product product = userService.findProductById(itemId[i]);
 
-        for (int i = 0; i < itemId.length; i++) {
-            Product product = userService.findProductById(itemId[i]);
+                OrderItem linea = new OrderItem();
+                linea.setQuantity(quantity[i]);
+                linea.setProduct(product);
+                order.addOrderItem(linea);
 
-            OrderItem linea = new OrderItem();
-            linea.setQuantity(quantity[i]);
-            linea.setProduct(product);
-            order.addOrderItem(linea);
-
-            log.info("ID: " + itemId[i].toString() + ", quantity: " + quantity[i].toString());
+                log.info("ID: " + itemId[i].toString() + ", quantity: " + quantity[i].toString());
+            }
         }
-
         userService.saveOrder(order);
         status.setComplete();
         flash.addFlashAttribute("success", "Order created successfully");

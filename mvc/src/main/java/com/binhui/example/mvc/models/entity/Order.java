@@ -3,6 +3,7 @@ package com.binhui.example.mvc.models.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class Order implements Serializable {
     }
 
     public Order() {
+        this.items = new ArrayList<>();
     }
 
     public Order(User user, List<OrderItem> items){

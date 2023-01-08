@@ -76,5 +76,15 @@ public class UserService implements IUserService{
         return productDao.findById(id).orElse(null);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Order findOrderById(Long id){
+        return orderDao.findById(id).orElse(null);
+    }
 
+    @Override
+    @Transactional
+    public void deleteOrder(Long id) {
+        orderDao.deleteById(id);
+    }
 }

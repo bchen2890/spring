@@ -15,9 +15,7 @@
                    th:href="@{'/view/' + ${order.user.id}}"
                    th:text="'&laquo; go back'"></a>
             </h4>
-
-            <form th:action="@{/order/form/}" th:object="${order}"
-                  method="post">
+            <form th:action="@{/order/form}" th:object="${order}" method="post" >
 
                 <div class="form-group row">
                     <label for="user" class="col-sm-2 col-form-label"
@@ -45,7 +43,7 @@
                     </div>
                 </div>
 
-                <table th:replace="order/product-template :: orderItems"></table>
+                <table th:replace="~{order/js/autocomplete-product :: javascript}"></table>
 
                 <table id="loadProducts"
                        class="table table-sm table-striped table-hover">
@@ -61,11 +59,11 @@
                     <tbody>
                     </tbody>
                 </table>
-                <h5>Total <span class="badge badge-secondary" id="quantity_total">0</span></h5>
+                <h5>Total:<span class="badge badge-secondary" id="quantity_total">0</span></h5>
 
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        <input type="submit" th:value="value"
+                        <input type="submit" th:value="Save"
                                class="btn btn-secondary" />
                     </div>
                 </div>
@@ -75,6 +73,6 @@
         </div>
     </div>
 </div>
-<script th:replace="order/js/autocomplete-product :: javascript"></script>
+<script th:replace="~{order/js/autocomplete-product :: javascript}"></script>
 </body>
 </html>

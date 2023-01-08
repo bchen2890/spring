@@ -19,4 +19,8 @@ public interface IUserService {
     List<Product> findByName(String term);
     public void saveOrder(Order order);
     public Product findProductById(Long id);
+
+    Order findOrderById(Long id);
+    public void deleteOrder(Long id);
+
 }
