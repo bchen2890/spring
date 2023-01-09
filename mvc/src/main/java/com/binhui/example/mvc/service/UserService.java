@@ -87,4 +87,10 @@ public class UserService implements IUserService{
     public void deleteOrder(Long id) {
         orderDao.deleteById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void saveProduct(Product product){
+        productDao.save(product);
+    }
 }

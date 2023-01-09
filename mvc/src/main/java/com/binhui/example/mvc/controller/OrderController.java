@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +54,11 @@ public class OrderController {
             flash.addFlashAttribute("error", "This user doesn't exist");
             return "redirect:/list";
         }
+        //Sample data
+        Product product = new Product("apple", 1.5);
+        OrderItem item = new OrderItem(product, 2);
+        //Order order = new Order(user, Arrays.asList(item));
+        userService.saveProduct(product);
 
         Order order = new Order();
         order.setUser(user);

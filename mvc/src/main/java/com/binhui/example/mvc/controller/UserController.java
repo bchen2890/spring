@@ -50,6 +50,12 @@ public class UserController {
     @GetMapping("/list")
     public String list(@RequestParam(name="page", defaultValue="0") int page, Model model) {
 
+        //Data sample
+
+        User user = new User();
+        user.setUsername("bchen");
+        user.setEmail("bchen@example.com");
+        userService.save(user);
         Pageable pageRequest = PageRequest.of(page, 8);
 
         Page<User> users = userService.findAll(pageRequest);
@@ -152,7 +158,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/view/{id}")
-    public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+    public String view(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
         User user = userService.findOne(id);
         if (user == null) {
