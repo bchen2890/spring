@@ -18,7 +18,7 @@
             <ul class="list-group my-2">
                 <li class="list-group-item list-group-item-primary"
                     th:text="'User detail'"></li>
-                <li class="list-group-item" th:text="${order.user}"></li>
+                <li class="list-group-item" th:text="${order.user.username}"></li>
                 <li class="list-group-item" th:text="${order.user.email}"></li>
             </ul>
 
@@ -64,6 +64,5 @@
     </div>
 
 </div>
-<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>
