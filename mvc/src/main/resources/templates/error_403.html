@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<nav th:replace="~{layout/layout :: header}"></nav>
+	<div class="container py-4">
+		<div class="card bg-danger text-white">
+			<div class="card-header">Access denied!</div>
+			<div class="card-body">
+				<h5 class="card-title">
+					Sorry <span th:text="${#authentication.name}"></span>,
+					You don't have permission to access this section.
+				</h5>
+				<a th:href="@{/list}" class="btn btn-outline-light" role="button">Go Home</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
