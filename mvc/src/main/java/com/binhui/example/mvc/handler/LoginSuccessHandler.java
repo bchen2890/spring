@@ -24,6 +24,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         flashMap.put("success", "Welcome " +authentication.getName());
 
+        flashMapManager.saveOutputFlashMap(flashMap, request, response);
 
         super.onAuthenticationSuccess(request, response, authentication);
     }

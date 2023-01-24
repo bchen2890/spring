@@ -14,7 +14,6 @@ public class MvcConfig implements WebMvcConfigurer {
 		WebMvcConfigurer.super.addResourceHandlers(registry);
 		registry.addResourceHandler("/resources/**")
 				.addResourceLocations("/resources/");
-		registry.addResourceHandler("/themes/**").addResourceLocations("/resources/themes/");
 	}
 
 	public void addViewControllers(ViewControllerRegistry registry) {
